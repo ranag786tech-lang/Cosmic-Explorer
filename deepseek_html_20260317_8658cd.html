@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Explorer | Journey Through The Universe</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --space-blue: #0b1d2a;
+            --cosmic-purple: #4a2c8d;
+            --star-yellow: #ffd700;
+            --nebula-pink: #ff4d8d;
+            --planet-orange: #ff7b25;
+            --text-light: #e6f1ff;
+            --text-dim: #a0c8ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: radial-gradient(ellipse at top, var(--space-blue) 0%, #000 70%);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Stars Background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 5s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(11, 29, 42, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--star-yellow), var(--nebula-pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--star-yellow);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--star-yellow);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 2px;
+            background: linear-gradient(to right, #fff, var(--text-dim));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+            color: var(--text-dim);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--planet-orange), var(--nebula-pink));
+            color: white;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-light);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(45deg, var(--nebula-pink), var(--planet-orange));
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--star-yellow);
+            color: var(--star-yellow);
+        }
+
+        /* Content Sections */
+        .section {
+            padding: 100px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--planet-orange), var(--nebula-pink));
+            border-radius: 2px;
+        }
+
+        .section-content {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+        }
+
+        /* Cards */
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .card {
+            background: rgba(30, 40, 60, 0.6);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--star-yellow);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--star-yellow);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-content {
+            color: var(--text-dim);
+            line-height: 1.6;
+        }
+
+        /* Tech Stack */
+        .tech-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .tech-item {
+            background: rgba(30, 40, 60, 0.7);
+            padding: 1.5rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .tech-item:hover {
+            background: rgba(74, 44, 141, 0.7);
+            transform: scale(1.05);
+        }
+
+        .tech-icon {
+            font-size: 1.5rem;
+        }
+
+        /* Interactive Planet */
+        .planet-container {
+            display: flex;
+            justify-content: center;
+            margin: 4rem 0;
+        }
+
+        .planet {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30px 30px, var(--planet-orange), #8b4513);
+            position: relative;
+            box-shadow: 
+                inset 0 0 50px rgba(0, 0, 0, 0.8),
+                0 0 50px rgba(255, 123, 37, 0.5);
+            animation: rotate 40s linear infinite;
+        }
+
+        .planet::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 40px;
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+        }
+
+        .planet::after {
+            content: '';
+            position: absolute;
+            top: 60px;
+            right: 50px;
+            width: 20px;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(11, 20, 30, 0.9);
+            padding: 3rem 5% 1.5rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--star-yellow);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .social-icons a {
+            color: var(--text-dim);
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: var(--star-yellow);
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            opacity: 0.7;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(11, 29, 42, 0.95);
+                flex-direction: column;
+                padding: 1rem 0;
+                text-align: center;
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .section {
+                padding: 70px 5%;
+            }
+            
+            .btn {
+                padding: 12px 24px;
+                font-size: 1rem;
+            }
+        }
+
+        /* Animation Classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .slide-in-left.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .slide-in-right.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Stars Background -->
+    <div class="stars" id="stars-container"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">Cosmic Explorer</div>
+        <div class="nav-links" id="navLinks">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#tech">Technologies</a>
+            <a href="#explore">Explore</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <div class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content fade-in">
+            <h1>EXPLORE THE UNIVERSE</h1>
+            <p>Journey beyond stars, galaxies and time itself. Discover how vast, silent and beautiful the cosmos truly is. Unlock the secrets of the universe with cutting-edge technology.</p>
+            <div class="hero-btns">
+                <button class="btn btn-primary" onclick="scrollToSection('about')">
+                    <i class="fas fa-rocket"></i> Begin Journey
+                </button>
+                <button class="btn btn-secondary" onclick="showTechDemo()">
+                    <i class="fas fa-code"></i> Tech Demo
+                </button>
+            </div>
+        </div>
+        
+        <!-- Interactive Planet -->
+        <div class="planet-container">
+            <div class="planet" id="interactivePlanet"></div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section" id="about">
+        <h2 class="section-title slide-in-left">The Cosmic Story</h2>
+        <p class="section-content slide-in-right">The universe is not just space — it is time, matter, energy and the story of everything that ever existed. From the Big Bang to the formation of galaxies, stars, and planets, the cosmos holds mysteries beyond our imagination.</p>
+        
+        <div class="cards-container">
+            <div class="card fade-in">
+                <div class="card-icon">
+                    <i class="fas fa-galaxy"></i>
+                </div>
+                <h3 class="card-title">Galaxies</h3>
+                <p class="card-content">Vast cosmic islands containing billions of stars, each with their own planetary systems and mysteries.</p>
+            </div>
+            
+            <div class="card fade-in">
+                <div class="card-icon">
+                    <i class="fas fa-black-hole"></i>
+                </div>
+                <h3 class="card-title">Black Holes</h3>
+                <p class="card-content">Regions of spacetime where gravity is so strong that nothing, not even light, can escape.</p>
+            </div>
+            
+            <div class="card fade-in">
+                <div class="card-icon">
+                    <i class="fas fa-atom"></i>
+                </div>
+                <h3 class="card-title">Dark Matter</h3>
+                <p class="card-content">The mysterious substance that makes up about 27% of the universe's mass-energy content.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technologies Section -->
+    <section class="section" id="tech">
+        <h2 class="section-title slide-in-left">Modern Tech Stack</h2>
+        <p class="section-content slide-in-right">Exploring the cosmos requires powerful technologies. Here are the cutting-edge tools used in modern space exploration and web development.</p>
+        
+        <div class="tech-container">
+            <div class="tech-item">
+                <i class="fab fa-html5 tech-icon" style="color: #e34c26;"></i>
+                <span>HTML5</span>
+            </div>
+            <div class="tech-item">
+                <i class="fab fa-css3-alt tech-icon" style="color: #264de4;"></i>
+                <span>CSS3+</span>
+            </div>
+            <div class="tech-item">
+                <i class="fab fa-js-square tech-icon" style="color: #f0db4f;"></i>
+                <span>JavaScript ES6+</span>
+            </div>
+            <div class="tech-item">
+                <i class="fab fa-python tech-icon" style="color: #306998;"></i>
+                <span>Python</span>
+            </div>
+            <div class="tech-item">
+                <i class="fab fa-react tech-icon" style="color: #61dbfb;"></i>
+                <span>React.js</span>
+            </div>
+            <div class="tech-item">
+                <i class="fas fa-bolt tech-icon" style="color: #000;"></i>
+                <span>Next.js</span>
+            </div>
+            <div class="tech-item">
+                <i class="fab fa-node-js tech-icon" style="color: #68a063;"></i>
+                <span>Node.js</span>
+            </div>
+            <div class="tech-item">
+                <i class="fas fa-database tech-icon" style="color: #00758f;"></i>
+                <span>MongoDB</span>
+            </div>
+        </div>
+        
+        <div class="cards-container" style="margin-top: 4rem;">
+            <div class="card slide-in-left">
+                <div class="card-icon">
+                    <i class="fas fa-satellite"></i>
+                </div>
+                <h3 class="card-title">Space Tech</h3>
+                <p class="card-content">Modern space exploration utilizes AI, machine learning, advanced robotics, and powerful telescopes to uncover cosmic secrets.</p>
+            </div>
+            
+            <div class="card fade-in">
+                <div class="card-icon">
+                    <i class="fas fa-laptop-code"></i>
+                </div>
+                <h3 class="card-title">Web Tech</h3>
+                <p class="card-content">Creating immersive cosmic experiences requires modern frameworks, 3D graphics, and real-time data visualization.</p>
+            </div>
+            
+            <div class="card slide-in-right">
+                <div class="card-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3 class="card-title">AI & ML</h3>
+                <p class="card-content">Artificial intelligence helps analyze vast amounts of astronomical data, identifying patterns and anomalies.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Explore Section -->
+    <section class="section" id="explore">
+        <h2 class="section-title slide-in-left">Infinite Mysteries</h2>
+        <p class="section-content slide-in-right">Black holes, dark matter, neutron stars, and galaxies beyond imagination remind us how small we are — yet how curious and capable of understanding the cosmos.</p>
+        
+        <div class="cards-container">
+            <div class="card fade-in">
+                <h3 class="card-title">Cosmic Timeline</h3>
+                <p class="card-content">From the Big Bang 13.8 billion years ago to the formation of our solar system 4.6 billion years ago.</p>
+                <button class="btn btn-secondary" style="margin-top: 1rem; padding: 8px 16px;" onclick="showTimeline()">
+                    <i class="fas fa-history"></i> View Timeline
+                </button>
+            </div>
+            
+            <div class="card fade-in">
+                <h3 class="card-title">Exoplanets</h3>
+                <p class="card-content">Thousands of planets orbiting other stars, some in the habitable zone where life could potentially exist.</p>
+                <button class="btn btn-secondary" style="margin-top: 1rem; padding: 8px 16px;" onclick="showExoplanets()">
+                    <i class="fas fa-globe-americas"></i> Discover Planets
+                </button>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 3rem;">
+            <button class="btn btn-primary" onclick="launchSimulation()">
+                <i class="fas fa-play-circle"></i> Launch Space Simulation
+            </button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-logo">Cosmic Explorer</div>
+            <div class="footer-links">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#tech">Technologies</a>
+                <a href="#explore">Explore</a>
+            </div>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>Inspired by NASA • Educational Demo • Built with Modern Web Technologies</p>
+            <p style="margin-top: 10px;">HTML5 • CSS3+ • JavaScript • Python • React.js • Next.js • Node.js</p>
+        </div>
+    </footer>
+
+    <script>
+        // Create animated stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars-container');
+            const starCount = 150;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // Random position
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                
+                // Random size
+                const size = Math.random() * 3 + 1;
+                
+                // Random animation delay
+                const delay = Math.random() * 5;
+                
+                star.style.left = `${x}%`;
+                star.style.top = `${y}%`;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.animationDelay = `${delay}s`;
+                
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // Scroll to section
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Show tech demo
+        function showTechDemo() {
+            alert("Tech Demo: This interactive website uses HTML5, CSS3+, JavaScript ES6+, and modern web technologies to create an immersive space experience. The animations are powered by CSS and JavaScript.");
+        }
+        
+        // Show timeline
+        function showTimeline() {
+            alert("Cosmic Timeline:\n\n• Big Bang: 13.8 billion years ago\n• First Stars: 13.4 billion years ago\n• Milky Way Forms: 13.2 billion years ago\n• Solar System Forms: 4.6 billion years ago\n• First Life on Earth: 3.7 billion years ago\n• Humans Evolve: 200,000 years ago");
+        }
+        
+        // Show exoplanets
+        function showExoplanets() {
+            alert("Notable Exoplanets:\n\n• Proxima Centauri b: Closest exoplanet to Earth\n• Kepler-186f: Earth-sized in habitable zone\n• TRAPPIST-1e: Potentially habitable rocky planet\n• HD 209458 b: First exoplanet detected by transit method\n• WASP-76b: Planet where it rains iron");
+        }
+        
+        // Launch simulation
+        function launchSimulation() {
+            const planet = document.getElementById('interactivePlanet');
+            planet.style.animationDuration = '10s';
+            planet.style.boxShadow = 'inset 0 0 50px rgba(0, 0, 0, 0.8), 0 0 100px rgba(255, 123, 37, 0.8)';
+            
+            setTimeout(() => {
+                planet.style.animationDuration = '40s';
+                planet.style.boxShadow = 'inset 0 0 50px rgba(0, 0, 0, 0.8), 0 0 50px rgba(255, 123, 37, 0.5)';
+            }, 3000);
+            
+            alert("Space Simulation Launched! The planet animation has been accelerated to simulate a journey through space.");
+        }
+        
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                }
+            });
+        }, observerOptions);
+        
+        // Toggle mobile menu
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('navLinks').classList.toggle('active');
+        });
+        
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('navLinks').classList.remove('active');
+            });
+        });
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create stars
+            createStars();
+            
+            // Observe elements for animations
+            document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right').forEach(el => {
+                observer.observe(el);
+            });
+            
+            // Animate hero section immediately
+            document.querySelector('.hero-content').classList.add('show');
+            
+            // Add interactive effect to planet
+            const planet = document.getElementById('interactivePlanet');
+            planet.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.1)';
+                this.style.boxShadow = 'inset 0 0 50px rgba(0, 0, 0, 0.8), 0 0 80px rgba(255, 123, 37, 0.7)';
+            });
+            
+            planet.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+                this.style.boxShadow = 'inset 0 0 50px rgba(0, 0, 0, 0.8), 0 0 50px rgba(255, 123, 37, 0.5)';
+            });
+            
+            // Display tech stack info in console
+            console.log("%c🚀 Cosmic Explorer Tech Stack 🚀", "color: #ffd700; font-size: 18px; font-weight: bold;");
+            console.log("%c• HTML5 - Modern semantic markup", "color: #e34c26");
+            console.log("%c• CSS3+ - Advanced animations & grid/flexbox", "color: #264de4");
+            console.log("%c• JavaScript ES6+ - Interactive functionality", "color: #f0db4f");
+            console.log("%c• Python - Backend & data analysis", "color: #306998");
+            console.log("%c• React.js - Component-based UI", "color: #61dbfb");
+            console.log("%c• Next.js - Server-side rendering & optimization", "color: #000");
+            console.log("%c• Plus: Node.js, MongoDB, AI/ML integrations", "color: #4a2c8d");
+        });
+        
+        // Add keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            // Space bar to scroll to next section
+            if (e.code === 'Space' && !e.target.matches('button, input, textarea')) {
+                e.preventDefault();
+                const sections = document.querySelectorAll('section');
+                const currentSection = Array.from(sections).findIndex(section => {
+                    const rect = section.getBoundingClientRect();
+                    return rect.top >= 0 && rect.top <= window.innerHeight / 2;
+                });
+                
+                const nextSection = currentSection < sections.length - 1 ? sections[currentSection + 1] : sections[0];
+                nextSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    </script>
+</body>
+</html>
